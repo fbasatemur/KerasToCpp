@@ -1,4 +1,4 @@
-# CUDA_Neural_Network_Design
+# Artificial Neural Network Design for Keras
 
 You may want to test a model you created using Keras in a C environment. This place was created to solve this problem. You can save the training weights of the model you created using Keras and then use it in the C environment. All layer and activation functions are designed to run using GPU. This will provide you with the fastest testing environment. The layers created so far are as follows:
 
