@@ -44,7 +44,7 @@ model.save_weights("model_save_weight.h5")
 It is converted to a text file for use with the C environment. You can do it as follows:
 
 ```ini
-python h5_to_txt.py model_save_weight.h5
+python h5_file_to_txt.py model_save_weight.h5
 ```
 
 Each layer in the model will be saved in a folder and their weight in it. The text files will then be loaded into the model layers.
