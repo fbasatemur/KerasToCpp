@@ -1,6 +1,6 @@
 # KerasToCpp - CPU
 
-You may want to test a model you created using Keras in a C environment. This place was created to solve this problem. You can save the training weights of the model you created using Keras and then use it in the C environment. All layer and activation functions are designed to run using CPU. The layers created so far are as follows:
+All layer and activation functions are designed to run using CPU. The layers created so far are as follows:
 
 ## Supported Keras layers
 
@@ -26,7 +26,7 @@ You may want to test a model you created using Keras in a C environment. This pl
 I assume you have "KernelCpu" and "CpuMat" files before using all layers. Before the model is designed, the input must be determined.
 As an example, let's say an RGB image with dimensions of 512x512x3 is input.
 
-If the first layer you will use is Dense, the bias value should be used for both the input and the first layer. Also, if 512x512x3 RGB input is converted to vector, it becomes a 1x512*512*3 vector.
+If the first layer you will use is Dense, the bias value should be used for both the input and the first layer. Also, if 512x512x3 RGB input is converted to vector, it becomes a 1x(512 * 512 * 3) vector.
 
 ```ini
 input = new CpuMat(512, 512, 3, true);              // CpuMat(input.Height, input.Width, input.Depth, useBias = true)
