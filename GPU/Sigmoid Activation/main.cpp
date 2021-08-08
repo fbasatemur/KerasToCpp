@@ -15,7 +15,7 @@ int main() {
 
 
 	// copy to graphic card memory from ram
-	inputImage.host2Device();
+	inputImage.Host2Device();
 
 
 	// apply Sigmoid activation
@@ -23,7 +23,7 @@ int main() {
 
 
 	// copy to ram from graphic card memory
-	inputImage.device2Host();
+	inputImage.Device2Host();
 
 
 	// show result

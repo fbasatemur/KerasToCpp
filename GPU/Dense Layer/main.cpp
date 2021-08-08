@@ -5,19 +5,10 @@
 
 int main() {
 
-	// input vector size( 1 row, 625 cols)
-	CpuGpuMat inputImage(1, 625);
-
-	// set values to input vector
-	float* inputP = (float*)inputImage.CpuP;
-	for (int i = 0; i < inputImage.Size - 1; i++)
-		inputP[i] = (float)i;
-
-
 	// create Dense Layers
-	Dense dense(100, inputImage.Rows, inputImage.Cols);
-	Dense dense1(20, dense.Result.Rows, dense.Result.Cols);
-	Dense dense2(1, dense1.Result.Rows, dense1.Result.Cols, false);
+	Dense dense(100, 1, 100);
+	Dense dense1(20, dense.Result);
+	Dense dense2(1, dense1.Result, true);
 
 
 	// Kernel and Bias weight addresses of each layer
@@ -30,33 +21,43 @@ int main() {
 
 
 	// load kernel and bias weights to ram
-	dense.load(denseKernel, denseBias);
-	dense1.load(dense1Kernel, dense1Bias);
-	dense2.load(dense2Kernel, dense2Bias);
+	dense.Load(denseKernel, denseBias);
+	dense1.Load(dense1Kernel, dense1Bias);
+	dense2.Load(dense2Kernel, dense2Bias);
+
+
+	// input vector size( 1 row, 100 cols)
+	CpuGpuMat inputImage(1, 100);
+	CpuGpuMat output(dense2.Result, 1);
+
+	// set values to input vector
+	float* inputP = (float*)inputImage.CpuP;
+	for (int i = 0; i < inputImage.Size - 1; i++)
+		inputP[i] = (float)i;
 
 
 	// copy to graphic card memory from ram
-	dense.host2Device();
-	dense1.host2Device();
-	dense2.host2Device();
-	inputImage.host2Device();
+	dense.Host2Device();
+	dense1.Host2Device();
+	dense2.Host2Device();
+	inputImage.Host2Device();
 
 
 	// create Neural Network
 
-	dense.apply(&inputImage);
+	dense.Apply(&inputImage);
 	// You can apply activation to the result matrix
 	// gpuRelu(&dense.Result);
 	// You can apply batchNormalization to the result matrix
 	// batchNormalization.apply(&dense.Result);
 
-	dense1.apply(&dense.Result);
+	dense1.Apply(&dense.Result);
 	// You can apply activation to the result matrix
 	// gpuRelu(&dense1.Result);
 	// You can apply batchNormalization to the result matrix
 	// batchNormalization.apply(&dense1.Result);
 
-	dense2.apply(&dense1.Result);
+	dense2.Apply(&dense1.Result);
 	// You can apply activation to the result matrix
 	// gpuSigmoid(&dense2.Result);
 	// You can apply batchNormalization to the result matrix
@@ -64,9 +65,9 @@ int main() {
 
 
 	// copy to ram from graphic card memory
-	dense2.Result.device2Host();
+	output.Device2Host();
 
-	float* variancePredict = (float*)dense2.Result.CpuP;
+	float* variancePredict = (float*)output.CpuP;
 	std::cout << variancePredict[0];
 
 }

@@ -2,7 +2,7 @@
 #include <fstream>
 #include "KernelCpu.h"
 #include <stdio.h>
-Dense::Dense(int neurons, int inputRows, int inputCols, bool useBias) 
+Dense::Dense(int neurons, int inputRows, int inputCols, bool useBias)
 {
 	this->neurons = neurons;
 
@@ -10,13 +10,13 @@ Dense::Dense(int neurons, int inputRows, int inputCols, bool useBias)
 	Result = new CpuMat(inputRows, neurons, 1, useBias);
 }
 
-void Dense::load(std::string& kernelFilename, std::string& biasFilename)
+void Dense::Load(std::string& kernelFilename, std::string& biasFilename)
 {
 	kernelLoad(kernelFilename);
 	biasLoad(biasFilename);
 }
 
-void Dense::apply(CpuMat* input)
+void Dense::Apply(CpuMat* input)
 {
 	cpuMatrixMultiplication(input, this->Kernel, this->Result);
 }
@@ -28,8 +28,8 @@ void Dense::kernelLoad(std::string& filename)
 	std::string* buffer = ReadTxtToBuffer(filename);
 	char* pch = strtok((char*)buffer->c_str(), " \n");
 
-	for (size_t i = 0; i < Kernel->Size - neurons; i++) 
-	{	
+	for (size_t i = 0; i < Kernel->Size - neurons; i++)
+	{
 		cpuFloatP[i] = std::stof(pch);
 		pch = strtok(NULL, " \n");
 	}
@@ -41,13 +41,13 @@ void Dense::kernelLoad(std::string& filename)
 void Dense::biasLoad(std::string& filename)
 {
 	float* cpuFloatP = (float*)Kernel->CpuP;
-	
+
 	std::string* buffer = ReadTxtToBuffer(filename);
 	char* pch = strtok((char*)buffer->c_str(), " \n");
 
 	int biasPos = Kernel->Size - this->neurons;
 
-	for (size_t i = 0; i < this->neurons; i++) 
+	for (size_t i = 0; i < this->neurons; i++)
 	{
 		cpuFloatP[biasPos + i] = std::stof(pch);
 		pch = strtok(NULL, " \n");

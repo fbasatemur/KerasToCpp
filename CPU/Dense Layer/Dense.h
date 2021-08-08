@@ -11,8 +11,8 @@ private:
 public:
 	Dense(int neurons, int inputRows, int inputCols, bool useBias = true);
 
-	void load(std::string& kernelFilename, std::string& biasFilename);
-	void apply(CpuMat* input);
+	void Load(std::string& kernelFilename, std::string& biasFilename);
+	void Apply(CpuMat* input);
 
 	int neurons;
 	CpuMat* Kernel;

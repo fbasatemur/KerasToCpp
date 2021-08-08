@@ -5,13 +5,17 @@
 int main() {
 
 	// create input matrix
-	CpuGpuMat inputImage(1, 625);
-
+	CpuGpuMat inputImage(1, 100);
 
 	// set values to input matrix
 	float* inputP = (float*)inputImage.CpuP;
 	for (int i = 0; i < inputImage.Size - 1; i++)		// last value is bias = 1.0 value
 		inputP[i] = (float)i;
+
+
+	// gamma = 1.0F, beta = 0.0F, epsilon = 0.001F -> Keras Default Hiperparameters
+	// create Keras BatchNormalization Layer
+	BatchNormalization batchNorm(inputImage.Rows, inputImage.Cols);
 
 
 	// load beta, gamma, moving_mean and moving_variance weights to ram
@@ -20,27 +24,21 @@ int main() {
 	std::string batchNormMovingMean = ".\\batch_normalization\\moving_mean.txt";
 	std::string batchNormMovingVariance = ".\\batch_normalization\\moving_variance.txt";
 
-
-	// gamma = 1.0F, beta = 0.0F, epsilon = 0.001F -> Keras Default Hiperparameters
-	// create Keras BatchNormalization Layer
-	BatchNormalization batchNorm(inputImage.Rows, inputImage.Cols);
-
-
 	// load batchnormalization layer weights to ram
-	batchNorm.load(batchNormBeta, batchNormGamma, batchNormMovingMean, batchNormMovingVariance);
+	batchNorm.Load(batchNormBeta, batchNormGamma, batchNormMovingMean, batchNormMovingVariance);
 
 
 	// copy to graphic card memory from ram
-	batchNorm.host2Device();
-	inputImage.host2Device();
+	batchNorm.Host2Device();
+	inputImage.Host2Device();
 
 
 	// Apply batchNormalization to inputImage matrix
-	batchNorm.apply(&inputImage);
+	batchNorm.Apply(&inputImage);
 
 
 	// copy to ram from graphic card memory
-	inputImage.device2Host();
+	inputImage.Device2Host();
 
 
 	// show result

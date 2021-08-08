@@ -1,17 +1,21 @@
-# Artificial Neural Network Design for Keras
+# KerasToCpp - GPU
 
 You may want to test a model you created using Keras in a C environment. This place was created to solve this problem. You can save the training weights of the model you created using Keras and then use it in the C environment. All layer and activation functions are designed to run using GPU. This will provide you with the fastest testing environment. The layers created so far are as follows:
 
-### Keras layers designed in C environment
+## Supported Keras layers
 
-* Dense Layer
-* ReLu Activation
-* Bach Normalization
-* Sigmoid Activation
+- ***Layers***
+  - :white_check_mark: Dense
+  - :white_check_mark: BatchNormalization
 
-A sample project created using all layers can be accessed here: [FFT-Variance_ANN_with_CUDA_CPP](https://github.com/fbasatemur/FFT-Variance_ANN_with_CUDA_CPP)
+- ***Activations***
+  - :white_check_mark: Sigmoid
+  - :white_check_mark: ReLU
+
+A sample project created using all layers can be accessed here: [Image_Quality_Assessment_with_ANN](https://github.com/fbasatemur/Image_Quality_Assessment_with_ANN)
 
 ### Requirements
+
 You will do your testing in parallel using the GPU. Therefore, you will need the following device and driver requirements.
 
 * **CUDA == 10.2**: https://developer.nvidia.com/cuda-toolkit-archive
@@ -21,6 +25,7 @@ You will do your testing in parallel using the GPU. Therefore, you will need the
 
 
 ### How to use Keras model weights in the C environment ?
+
 Keras weights are in hdf5 file format. I assume you got the model record as .json and .h5.
 You can create your model training weights as follows:
 

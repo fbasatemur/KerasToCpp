@@ -16,7 +16,7 @@ MaxPooling2D::MaxPooling2D(CpuMat* input, size_t poolX, size_t poolY, size_t str
 	this->strideY = strideY;
 }
 
-void MaxPooling2D::apply(CpuMat* input)
+void MaxPooling2D::Apply(CpuMat* input)
 {
 	size_t inputSize2D = input->Cols * input->Rows;
 	size_t resultSize2D = Result->Cols * Result->Rows;
@@ -50,4 +50,3 @@ void MaxPooling2D::apply(CpuMat* input)
 MaxPooling2D::~MaxPooling2D(){
 	delete[] Result->CpuP;
 }
-

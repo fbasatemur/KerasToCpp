@@ -7,6 +7,6 @@ class Flatten {
 
 public:
 	Flatten(CpuMat* input, bool useBias = true);
-	void apply(CpuMat* input);
+	void Apply(CpuMat* input);
 	CpuMat* Result;
 };

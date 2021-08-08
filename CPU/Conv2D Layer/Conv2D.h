@@ -11,8 +11,8 @@ private:
 public:
 	Conv2D(size_t filters, size_t filterRows, size_t filterCols, CpuMat* input, bool useBias = true);
 
-	void load(std::string& kernelFilename, std::string& biasFilename);
-	void apply(CpuMat* input);
+	void Load(std::string& kernelFilename, std::string& biasFilename);
+	void Apply(CpuMat* input);
 
 	size_t filters;
 	CpuMat* Kernel;

@@ -3,10 +3,10 @@
 #include "BatchNormalization.h"
 
 
-void BatchNormalization::weightLoad(CpuMat* weightName, std::string& filename)
+void BatchNormalization::Weightload(CpuMat* weightName, std::string& filename)
 {
 	float* cpuFloatP = (float*)weightName->CpuP;
-	
+
 	std::string* buffer = ReadTxtToBuffer(filename);
 	char* pch = strtok((char*)buffer->c_str(), " \n");
 
@@ -39,23 +39,22 @@ BatchNormalization::BatchNormalization(int resultRows, int resultCols, bool useB
 	movingVariance.Size = movingVariance.Rows * movingVariance.Cols;
 
 
-	beta.MemAlloc();				
+	beta.MemAlloc();
 	gamma.MemAlloc();
 	movingMean.MemAlloc();
 	movingVariance.MemAlloc();
 }
 
-void BatchNormalization::load(std::string& betaFilename, std::string& gammaFilename, std::string& movMeanFilename, std::string& movVarFilename)
+void BatchNormalization::Load(std::string& betaFilename, std::string& gammaFilename, std::string& movMeanFilename, std::string& movVarFilename)
 {
-	weightLoad(&beta, betaFilename);
-	weightLoad(&gamma, gammaFilename);
-	weightLoad(&movingMean, movMeanFilename);
-	weightLoad(&movingVariance, movVarFilename);
+	WeightLoad(&beta, betaFilename);
+	WeightLoad(&gamma, gammaFilename);
+	WeightLoad(&movingMean, movMeanFilename);
+	WeightLoad(&movingVariance, movVarFilename);
 }
 
 
-void BatchNormalization::apply(CpuMat* resultMat) {
+void BatchNormalization::Apply(CpuMat* resultMat) {
 
 	cpuBatchNormalization(resultMat, &beta, &gamma, &movingMean, &movingVariance, epsilon);
 }
-

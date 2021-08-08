@@ -20,14 +20,14 @@ Conv2D::Conv2D(size_t filters, size_t filterRows, size_t filterCols, CpuMat* inp
 	Result = new CpuMat(input ->Rows - filterRows + 1, input->Cols - filterCols + 1, filters, false);
 }
 
-void Conv2D::load(std::string& kernelFilename, std::string& biasFilename)
+void Conv2D::Load(std::string& kernelFilename, std::string& biasFilename)
 {
 	kernelLoad(kernelFilename);
 	biasLoad(biasFilename);
 }
 
 
-void Conv2D::apply(CpuMat* input)
+void Conv2D::Apply(CpuMat* input)
 {
 	cpuMatrixConv2D(input, this->filters, this->Kernel, this->Result);
 }
@@ -35,14 +35,14 @@ void Conv2D::apply(CpuMat* input)
 
 void Conv2D::kernelLoad(std::string& filename)
 {
-	
+
 	std::string* buffer = ReadTxtToBuffer(filename);
 	char* pch = strtok((char*)buffer->c_str(), " \n");
 
 	float* cpuFloatP;
 	size_t size3D = Kernel->Size - 1;
 
-	for (size_t f = 0; f < this->filters; f++) 
+	for (size_t f = 0; f < this->filters; f++)
 	{
 		cpuFloatP = (float*)Kernel[f].CpuP;
 		for (size_t i = 0; i < size3D; i++)
@@ -64,7 +64,7 @@ void Conv2D::biasLoad(std::string& filename)
 	float* cpuFloatP;
 	int biasPos = Kernel->Size - 1;
 
-	for (size_t f = 0; f < this->filters; f++) 
+	for (size_t f = 0; f < this->filters; f++)
 	{
 		cpuFloatP = (float*)Kernel[f].CpuP;
 		cpuFloatP[biasPos] = std::stof(pch);

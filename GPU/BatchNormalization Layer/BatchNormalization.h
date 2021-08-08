@@ -5,14 +5,15 @@
 
 class BatchNormalization {
 private:
-	void weightLoad(CpuGpuMat* weightName, std::string& weightFilename);
+	void WeightLoad(CpuGpuMat* weightName, std::string& weightFilename);
 
 public:
 	BatchNormalization(int resultRows, int resultCols, bool useBias = true);
+	BatchNormalization(CpuGpuMat& result, bool isEndLayer = false, bool isMemPin = false);
 
-	void load(std::string& betaFilename, std::string& gammaFilename, std::string& movMeanFilename, std::string& movVarFilename);
-	void apply(CpuGpuMat* resultMat);
-	void host2Device();
+	void Load(std::string& betaFilename, std::string& gammaFilename, std::string& movMeanFilename, std::string& movVarFilename);
+	void Apply(CpuGpuMat* resultMat);
+	void Host2Device();
 
 	float epsilon = 0.001F;
 	CpuGpuMat beta;

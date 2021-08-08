@@ -8,14 +8,20 @@ public:
 	int Rows;
 	int Cols;
 	int Size;		// rows * cols
+	bool MemPinned;
+	void* deallocCpuP = nullptr;		// for free memory ram pointer
+	void* deallocGpuP = nullptr;		// for free memory gpu pointer
 
 	CpuGpuMat();
-	CpuGpuMat(const int& rows, const int& cols, bool useBias = true);
+	CpuGpuMat(int rows, int cols, bool useMemPin = false);
+	CpuGpuMat(const float* inputs, int inputRow, int inputCol, int numberInputs, bool useMemPin = false);
+	CpuGpuMat(CpuGpuMat& result, int numberOutputs, bool useMemPin = false);
 	~CpuGpuMat();			// memory free
-	void host2Device();
-	void device2Host();
-	void cpuGpuAlloc();		// memory allocation
+	void Host2Device();
+	void Device2Host();
+	void CpuGpuAlloc();		// memory allocation
 
 private:
-	int getAllocationSize();
+	int GetAllocationSize();
 };
+

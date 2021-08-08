@@ -1,17 +1,17 @@
-# CUDA_Relu_Activation
+# Relu_Activation - GPU
 
-It was created with reference to the ReLu activation used in Keras. If you are using ReLu activation in your model, you have to use the layer here.
-For example, let's say you want to apply ReLu activation to a vector of 1x100.
+It was created with reference to the ReLU activation used in Keras. If you are using ReLU activation in your model, you have to use the layer here.
+For example, let's say you want to apply ReLU activation to a vector of 1x100.
 
-First, let's define the input vector. If bias is used in dense layers, 1.0 bias value should be added to the input vector. For this (by default) useBias = true is used. Keras use bias value by default in Dense layers -> [Source](https://keras.io/api/layers/core_layers/dense/)
+First, let's define the input vector.
 
+```ini
+CpuGpuMat inputImage(1, 100);   	// inputVector(1, cols, useMemPin = false)
 ```
-CpuGpuMat inputImage(1, 100);   // CpuGpuMat inputVector(1, cols, bias=true)
-```
 
-We created a vector of 1x100, but we get a 1x101 vector with the bias value. Therefore, value will be assigned 100 times. This does not need to be taken into account when ReLu activation is used with other layers.
+We created a vector of 1x100, but we get a 1x101 vector with the bias value. Therefore, value will be assigned 100 times. This does not need to be taken into account when ReLU activation is used with other layers.
 
-```
+```ini
 // set values to input vector
 float* inputP = (float*)inputImage.CpuP;
 for (int i = 0; i < inputImage.Size - 1; i++)		  // last value is bias = 1.0 value
@@ -20,25 +20,25 @@ for (int i = 0; i < inputImage.Size - 1; i++)		  // last value is bias = 1.0 val
 
 The then, ram memory is copied into the graphics card memory.
 
-```
-inputImage.host2Device();
+```ini
+inputImage.Host2Device();
 ```
 
 Apply ReLU activation
 
-```
+```ini
 gpuRelu(&inputImage);
 ```
 
-The ReLu activation function is applied on the input vector. Therefore, the gpu memory is copied into the ram memory so that the results can be observed.
+The ReLU activation function is applied on the input vector. Therefore, the GPU memory is copied into the ram memory so that the results can be observed.
 
-```
-inputImage.device2Host();
+```ini
+inputImage.Device2Host();
 ```
 
 Finally the result values is show
 
-```
+```ini
 float* resultP = (float*)inputImage.CpuP;
 for (int i = 0; i < inputImage.Size; i++)			// last value is bias = 1.0 value
 		std::cout << resultP[i] << std::endl;

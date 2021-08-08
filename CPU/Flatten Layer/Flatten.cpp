@@ -5,7 +5,7 @@ Flatten::Flatten(CpuMat* input, bool useBias)
 	Result = new CpuMat(1, input->Size, 1, useBias);
 }
 
-void Flatten::apply(CpuMat* input)
+void Flatten::Apply(CpuMat* input)
 {
 	float* resultP = (float*)Result->CpuP;
 	float* inputP = (float*)input->CpuP;
