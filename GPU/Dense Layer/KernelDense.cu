@@ -4,7 +4,7 @@
 #include <math.h>
 
 
-__global__ void gpuMatrixMult(float* gpuMat1, float* gpuMat2, float* gpuMat3, int m1Rows, int m1Cols, int m2Cols)
+__global__ void gpuMatrixMult(float* gpuMat1, float* gpuMat2, float* gpuMat3, int m1Rows, int m1Cols, int m2Cols, int inStartIndex, int resStartIndex)
 {
 	int row = blockIdx.y * blockDim.y + threadIdx.y;
 	int col = blockIdx.x * blockDim.x + threadIdx.x;
@@ -13,24 +13,22 @@ __global__ void gpuMatrixMult(float* gpuMat1, float* gpuMat2, float* gpuMat3, in
 	if (row < m1Rows && col < m2Cols) {
 		for (int i = 0; i < m1Cols; i++) {
 
-			sum += gpuMat1[row * m1Cols + i] * gpuMat2[i * m2Cols + col];
+			sum += gpuMat1[inStartIndex + row * m1Cols + i] * gpuMat2[i * m2Cols + col];
 		}
-		gpuMat3[row * m2Cols + col] = sum;
+		gpuMat3[resStartIndex + row * m2Cols + col] = sum;
 	}
 }
 
 
-void gpuMatrixMultiplication(CpuGpuMat* input, CpuGpuMat* kernel, CpuGpuMat* result)
+void gpuMatrixMultiplication(CpuGpuMat* Mat1, CpuGpuMat* Mat2, CpuGpuMat* Mat3, int inStartIndex, int resStartIndex)
 {
-	//vscc
 	int threadsPerBlock = 32;
-	
-	int gridCols = ceil(double(kernel->Cols) / double(threadsPerBlock));
-	int gridRows = ceil(double(input->Rows) / double(threadsPerBlock));
+
+	int gridCols = ceil(double(Mat2->Cols) / double(threadsPerBlock));
+	int gridRows = ceil(double(Mat1->Rows) / double(threadsPerBlock));
 
 	dim3 gridDim(gridCols, gridRows);
 	dim3 blockDim(threadsPerBlock, threadsPerBlock);
-	
-	//nvcc
-	gpuMatrixMult<<< gridDim, blockDim >>> ((float*)input->GpuP, (float*)kernel->GpuP, (float*)result->GpuP, input->Rows, input->Cols, kernel->Cols);
+
+	gpuMatrixMult << < gridDim, blockDim >> > ((float*)Mat1->GpuP, (float*)Mat2->GpuP, (float*)Mat3->GpuP, Mat1->Rows, Mat1->Cols, Mat2->Cols, inStartIndex, resStartIndex);
 }

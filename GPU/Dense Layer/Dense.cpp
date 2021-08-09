@@ -67,7 +67,7 @@ void Dense::Load(std::string& kernelFilename, std::string& biasFilename)
 
 void Dense::Apply(CpuGpuMat* input, int inputIndex, int resultIndex)
 {
-	gpuMatrixMultiplication(input, &this->Kernel, &this->Result);
+	gpuMatrixMultiplication(input, &this->Kernel, &this->Result, inputIndex * input->Cols * input->Rows, resultIndex);
 }
 
 void Dense::Host2Device() {
