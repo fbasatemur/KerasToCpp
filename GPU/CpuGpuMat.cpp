@@ -61,7 +61,7 @@ CpuGpuMat::CpuGpuMat(CpuGpuMat& result, int numberOutputs, bool useMemPin) {
 
 CpuGpuMat::~CpuGpuMat() {
 
-	if (!this->deallocCpuP && !this->deallocGpuP) {
+	if (!this->deallocCpuP && !this->deallocGpuP && this->CpuP && this->GpuP) {
 		assert(cudaFree(this->GpuP) == cudaSuccess);
 
 		if (this->MemPinned)

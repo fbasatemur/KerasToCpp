@@ -3,11 +3,11 @@
 class CpuGpuMat {
 
 public:
-	void* CpuP;		// ram pointer
-	void* GpuP;		// graphic memory pointer
+	void* CpuP = nullptr;		// ram pointer
+	void* GpuP = nullptr;		// graphic memory pointer
 	int Rows;
 	int Cols;
-	int Size;		// rows * cols
+	int Size;					// rows * cols
 	bool MemPinned;
 	void* deallocCpuP = nullptr;		// for free memory ram pointer
 	void* deallocGpuP = nullptr;		// for free memory gpu pointer
